@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户信息 - FastAuth Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            border: 4px solid #07c160;
+        }
+        .avatar-placeholder {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #adb5bd;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+        .nickname {
+            color: #07c160;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .info-table th,
+        .info-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .info-table th {
+            color: #666;
+            font-weight: 500;
+            width: 100px;
+        }
+        .info-table td {
+            color: #333;
+            word-break: break-all;
+        }
+        .logout-btn {
+            display: inline-block;
+            background: #dc3545;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        .logout-btn:hover {
+            background: #c82333;
+        }
+        .success-badge {
+            display: inline-block;
+            background: #d4edda;
+            color: #155724;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .raw-data {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .raw-data pre {
+            font-size: 12px;
+            color: #666;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .toggle-raw {
+            cursor: pointer;
+            color: #667eea;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="success-badge">授权成功</span>
+
+        <div th:if="${user.avatar != null and user.avatar != ''}">
+            <img th:src="${user.avatar}" alt="头像" class="avatar">
+        </div>
+        <div th:unless="${user.avatar != null and user.avatar != ''}" class="avatar-placeholder">
+            <span th:text="${user.nickname != null ? user.nickname.substring(0,1) : '?'}"></span>
+        </div>
+
+        <h1>欢迎回来</h1>
+        <p class="nickname" th:text="${user.nickname ?: user.uuid}">昵称</p>
+
+        <table class="info-table">
+            <tr>
+                <th>OpenID</th>
+                <td th:text="${user.uuid}">-</td>
+            </tr>
+            <tr th:if="${user.nickname != null}">
+                <th>昵称</th>
+                <td th:text="${user.nickname}">-</td>
+            </tr>
+            <tr th:if="${user.gender != null}">
+                <th>性别</th>
+                <td th:text="${user.gender.desc}">-</td>
+            </tr>
+            <tr th:if="${user.location != null}">
+                <th>地区</th>
+                <td th:text="${user.location}">-</td>
+            </tr>
+            <tr>
+                <th>来源</th>
+                <td th:text="${user.source}">-</td>
+            </tr>
+            <tr th:if="${user.token != null and user.token.scope != null}">
+                <th>Scope</th>
+                <td th:text="${user.token.scope}">-</td>
+            </tr>
+        </table>
+
+        <div class="toggle-raw" onclick="toggleRawData()">查看原始数据</div>
+
+        <div class="raw-data" id="rawData" style="display: none;">
+            <pre th:text="${user.rawUserInfo}">-</pre>
+        </div>
+
+        <a href="/auth/logout" class="logout-btn">退出登录</a>
+    </div>
+
+    <script>
+        function toggleRawData() {
+            var rawData = document.getElementById('rawData');
+            if (rawData.style.display === 'none') {
+                rawData.style.display = 'block';
+            } else {
+                rawData.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

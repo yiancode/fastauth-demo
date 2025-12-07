@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: fastauth-demo
+  thymeleaf:
+    cache: false
+
+# FastAuth 微信公众号配置
+# 请在环境变量中配置以下参数，或创建 application-local.yml 覆盖
+fastauth:
+  wechat-mp:
+    # 公众号 AppID
+    client-id: ${WECHAT_APP_ID:your-app-id}
+    # 公众号 AppSecret
+    client-secret: ${WECHAT_APP_SECRET:your-app-secret}
+    # 回调地址（需要配置内网穿透域名）
+    redirect-uri: ${WECHAT_REDIRECT_URI:http://your-domain.com/auth/callback}
+
+logging:
+  level:
+    com.example: DEBUG
+    com.yiancode.fastauth: DEBUG

@@ -1,0 +1,36 @@
+# Compiled class files
+target/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+
+# Maven
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local config (contains sensitive info)
+application-local.yml
+application-local.properties
+
+# WeChat verification file
+MP_verify_*.txt
+
+# Docs (published separately)
+docs/
+
+# Temp files
+*.tmp
+*.bak
